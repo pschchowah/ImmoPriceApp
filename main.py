@@ -414,7 +414,7 @@ class ModelEvaluator:
         y_train_pred: np.ndarray,
         y_test: pd.Series,
         y_test_pred: np.ndarray,
-        model: Any,
+        model,
         X_test: pd.DataFrame,
     ):
         """
