@@ -391,6 +391,29 @@ class XGBoostModel:
         print(f"Inference completed in {inference_time:.4f} seconds.")
 
         return predictions
+    def save_model(self, model_path: str) -> None:
+        """
+        Saves the trained model to a specified file path.
+
+        Args:
+            model_path (str): The file path to save the model.
+        """
+        if self.model is not None:
+            self.model.save_model(model_path)
+            print(f"Model saved to {model_path}.")
+        else:
+            print("No model to save!")
+
+    def load_model(self, model_path: str) -> None:
+        """
+        Loads a model from a specified file path.
+
+        Args:
+            model_path (str): The file path to load the model from.
+        """
+        self.model = xgb.Booster()
+        self.model.load_model(model_path)
+        print(f"Model loaded from {model_path}.")
 
     def get_feature_importance(self, feature_names: list) -> dict:
         """
@@ -599,6 +622,8 @@ def main():
     y_train_pred = xgb_model.predict(X_train)
     y_test_pred = xgb_model.predict(X_test)
 
+    saved_model = xgb_model.save_model('model/immoprice_model.json')
+    print("model saved")
     # Evaluate the model
     evaluator = ModelEvaluator(
         y_train, y_train_pred, y_test, y_test_pred, xgb_model, X_test
@@ -617,6 +642,8 @@ def main():
     print(f'R^2 (Test): {metrics["R2_test"]}')
     print(f'MAPE (Test): {metrics["MAPE_test"]}')
     print(f'sMAPE (Test): {metrics["sMAPE_test"]}')
+
+    print(X_train.head())
 
 
 if __name__ == "__main__":
